@@ -122,4 +122,4 @@ kubectl get pod -o wide
 get result in yaml format:
 ```
 kubectl get deployments.apps nginx-deployment -o yaml
-```# kubectl-basics
+```
