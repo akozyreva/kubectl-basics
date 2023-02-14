@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  namespace: my-namespace
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql
+          ports:
+          - containerPort: 3306  # it's port used be default
+          env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: mysql-root-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service  # it's random name
+  namespace: my-namespace
+spec:
+  selector:
+    app: mysql  # it must be matched to name of mongodb deployment
+  ports:
+   - protocol: TCP
+     port: 3306  # service port

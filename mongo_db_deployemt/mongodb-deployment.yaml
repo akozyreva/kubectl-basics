@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+  labels:
+    app: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo
+          ports:
+          - containerPort: 27017  # it's port used be default
+          env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: mongo-root-username
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: mongo-root-password
+                name: mongodb-secret
+---
+# this sign is allow to write several configurations in 1 file
+# service configuration
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service  # it's random name
+spec:
+  selector:
+    app: mongodb  # it must be matched to name of mongodb deployment
+  ports:
+   - protocol: TCP
+     port: 27017  # service port
+     targetPort: 27017  # container port of deployment
