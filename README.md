@@ -1,5 +1,7 @@
 # Kubectl-basics
 
+## Configuration
+
 commands fpr k8s:
 
 https://gitlab.com/nanuchi/youtube-tutorial-series/-/blob/master/basic-kubectl-commands/cli-commands.md
@@ -54,6 +56,8 @@ kubectl get services
 NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
 ...
 ```
+
+## Deployments
 
 Create deployment:
 
@@ -193,7 +197,7 @@ To open public service in minukube (but in real kubernetes external IP is assign
 minikube service <service-name>
 ```
 
-Namespaces:
+## Namespaces:
 
 - they are needed to group resources (databases in one namespace, monitoring in another namespace, etc.)
 - if 2 teams use the same app, but different configuration
@@ -275,3 +279,27 @@ In order to switch to the right one:
 ```
 kubens <namespace-name>
 ```
+
+## Ingress (testing example with work of minikube)
+
+minikube ingress controller (for learning and testing purposes)
+
+to enable ingress in minikube (automatically starts the K8s Nginx implementation of ingress)
+
+```
+ingress addons enable ingress
+```
+
+and ingress controller will be configured automatically
+
+To check it (you see like nginx-ingress-controller):
+
+```
+kubectl get pod -n kube-system
+```
+
+## Helm
+
+You can use helm hub to search specific helm structure
+
+https://artifacthub.io/packages/search

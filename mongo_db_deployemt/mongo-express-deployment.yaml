@@ -50,3 +50,4 @@ spec:
      targetPort: 8081
      nodePort: 30000 # port which should be opened so user has an access from browser. must be [30000-32767]
 
+# LoadBalancer and nodePort are the signs that service is opened to the world!!!
