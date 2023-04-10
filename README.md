@@ -437,3 +437,27 @@ minikube service monitoring-grafana
 ```
 
 this will be because you're on the docker driver, which runs minikube as a docker container. This is good because it is more stable and efficient that running minikube under some kind of VM - but the problem is, you've got 2 network hops to get into the container - one to get past the vm that docker is running under, and then another hop to get to the node port. It's the minikube service command that gets you into that VM.
+
+helm - show possible chart values
+
+```
+helm show values <label-name> <label/>release-name>
+```
+
+```
+helm show values prometheus-community/kube-prometheus-stack > values.yaml
+```
+
+helm uses `values.yaml` for configuration cluster
+
+to update specific value - find it in values.yaml and then update:
+
+```
+helm upgrade <label-name> <label/>release-name> --set <key>=<value>
+```
+
+In example we use `grafana` prefix here, because `adminPassword` is child of `grafana` - be careful!
+
+```
+helm upgrade monitoring prometheus-community/kube-prometheus-stack --set grafana.adminPassword=admin
+```
