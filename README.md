@@ -44,6 +44,13 @@ another way to check minikube :
 minikube status
 ```
 
+minikube - start with specific parameters (need to rm and start it again):
+
+```
+❯ minikube delete
+❯ minikube start --memory 4096
+```
+
 Kubectl get statuses commands:
 
 ```
@@ -177,6 +184,12 @@ Get services:
 kubectl get services
 ```
 
+or:
+
+```
+kubectl get svc
+```
+
 How to check, that service is applied to pod:
 
 ```
@@ -303,3 +316,124 @@ kubectl get pod -n kube-system
 You can use helm hub to search specific helm structure
 
 https://artifacthub.io/packages/search
+
+
+basic command to start:
+
+```
+helm create <project-name>
+```
+
+it creates helm project with name specific name
+
+to check structure:
+
+```
+tree <project-name>
+```
+
+helm - install project: search project and open detailed info. Usually it can be installed like:
+
+```
+helm repo add <label> <repo-name>
+helm install <label-name> <label/>release-name>
+
+# example - might be changed in the future
+helm repo add my-bitnami https://charts.bitnami.com/bitnami
+helm install mysql bitnami/mysql
+```
+
+where `label-name` is something which might be recognizable, because it will be used for whole kubernetes deployment.
+`release-name` is taken from package description
+
+Then you can check deployment by
+
+```
+kubectl get pods -w --namespace default
+```
+
+or you can use shorcut `po`:
+
+```
+kubectl get po -w --namespace default
+```
+
+and output will be like:
+
+```
+❯ kubectl get pods -w --namespace default
+NAME                            READY   STATUS    RESTARTS      AGE
+mysql-0                         1/1     Running   0             2m20s
+```
+
+to show all helm charts (it shows version, status, etc.)
+
+```
+helm list
+```
+to uninstall helm:
+
+```
+helm uninstall mysql
+```
+
+*Attention!*  Helm - stable chart repos - deprecated, use ArtifactHUB instead,
+so far there's no stable repo yet
+
+Example of work of `kube-prometheus-stack` helm (Prometheus + Grafana)
+
+Add helm repo:
+
+https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+
+```
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+```
+
+And then install it:
+
+```
+helm install <RELEASE_NAME> prometheus-community/kube-prometheus-stack
+```
+
+<RELEASE_NAME> is your name, so you can call it as you wish:
+
+```
+helm install monitoring prometheus-community/kube-prometheus-stack
+```
+
+and then check, that installation was successful:
+
+```
+kubectl --namespace default get pods -l "release=monitoring"
+```
+
+to open Grafana monitoring svc locally for testing:
+
+```
+kubectl edit svc monitoring-grafana
+```
+and then change in yaml file:
+
+```
+ ports:
+  - name: http-web
+    port: 80
+    protocol: TCP
+    targetPort: 3000
+    nodePort:30001 # add this param
+  selector:
+    app.kubernetes.io/instance: monitoring
+    app.kubernetes.io/name: grafana
+  sessionAffinity: None
+  type: NodePort # change type here
+```
+
+And after that on minikube-docker you can see it by:
+
+```
+minikube service monitoring-grafana
+```
+
+this will be because you're on the docker driver, which runs minikube as a docker container. This is good because it is more stable and efficient that running minikube under some kind of VM - but the problem is, you've got 2 network hops to get into the container - one to get past the vm that docker is running under, and then another hop to get to the node port. It's the minikube service command that gets you into that VM.
