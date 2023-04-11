@@ -461,3 +461,42 @@ In example we use `grafana` prefix here, because `adminPassword` is child of `gr
 ```
 helm upgrade monitoring prometheus-community/kube-prometheus-stack --set grafana.adminPassword=admin
 ```
+
+or this one (values can be found in chart documentation):
+
+```
+helm upgrade monitoring prometheus-community/kube-prometheus-stack \
+    --set grafana.adminPassword=admin  \
+    --set grafana.service.type=NodePort \
+    --set grafana.service.nodePort=30001
+```
+
+Or you can directly add values in grafana.service section like this in `values.yaml` (located in `helm_examples`):
+
+```
+  ## Passed to grafana subchart and used by servicemonitor below
+  ##
+  service:
+    portName: http-web
+    type: NodePort
+    nodePort: 30008
+```
+
+And after that make upgrade:
+
+```
+helm upgrade monitoring prometheus-community/kube-prometheus-stack --values=./values.yaml
+```
+
+You can even play around and upload only values you need, so shorten `values.yaml` to values you need and upload only them (but it's used only for small testing only):
+
+```
+grafana:
+  ## Passed to grafana subchart and used by servicemonitor below
+  ##
+  service:
+    portName: http-web
+    type: NodePort
+    nodePort: 30008
+```
+
