@@ -324,6 +324,10 @@ basic command to start:
 helm create <project-name>
 ```
 
+```
+helm create fleetman-helm-chart
+```
+
 it creates helm project with name specific name
 
 to check structure:
@@ -568,6 +572,19 @@ helm template monitoring ./kube-prometheus-stack --values=./kube-prometheus-stac
 
 ```
 helm template monitoring ./kube-prometheus-stack --values=./kube-prometheus-stack/myvalues.yaml > monitoring-stack.yaml
+```
+
+
+or for gebugging current helm chart:
+
+```
+helm template .
+```
+
+to rewrite specific value (from values.yaml as in example):
+
+```
+helm template . --set webapp.numberOfWebbAppReplicas=12
 ```
 
 and then simply apply cluster without any helm command:

@@ -1,0 +1,2 @@
+hello:
+    world: {{ printf "evaluate go code" }}
