@@ -15,7 +15,8 @@ spec:
       containers:
       - name: webapp
         # Note to deployer - add -dev at the end of here for development version
-        image: richardchesterwood/k8s-fleetman-helm-demo:v1.0.0-dev
+        # example of string function
+        image: {{ .Values.doсkerRepoName | lower }}/k8s-fleetman-helm-demo:v1.0.0-dev
 ---
 apiVersion: v1
 kind: Service

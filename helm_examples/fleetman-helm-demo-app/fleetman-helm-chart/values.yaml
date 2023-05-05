@@ -1,2 +1,3 @@
 webapp:
   numberOfWebbAppReplicas: 4
+doсkerRepoName: RicharDchesterwood
