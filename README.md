@@ -555,3 +555,23 @@ helm pull bitnami/mysql --untar
 ```
 
 `--untar` allows to unpack zip automatically
+
+Helm - generate yaml, which described cluster, but doesn't apply it!
+
+```
+helm template [NAME] [CHART] [flags]
+```
+
+```
+helm template monitoring ./kube-prometheus-stack --values=./kube-prometheus-stack/myvalues.yaml
+```
+
+```
+helm template monitoring ./kube-prometheus-stack --values=./kube-prometheus-stack/myvalues.yaml > monitoring-stack.yaml
+```
+
+and then simply apply cluster without any helm command:
+
+```
+kubectl apply -f monitoring-stack.yaml
+```
