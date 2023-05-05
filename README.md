@@ -346,6 +346,16 @@ helm install mysql bitnami/mysql
 where `label-name` is something which might be recognizable, because it will be used for whole kubernetes deployment.
 `release-name` is taken from package description
 
+of you can install helm chart if you've already had chart files locally:
+
+```
+helm install <label-name> <path-to-chart-folder>
+```
+
+```
+helm install monitoring ./kube-prometheus-stack
+```
+
 Then you can check deployment by
 
 ```
@@ -389,6 +399,8 @@ https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
 ```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
+
+helm repo list
 ```
 
 And then install it:
@@ -402,6 +414,17 @@ helm install <RELEASE_NAME> prometheus-community/kube-prometheus-stack
 ```
 helm install monitoring prometheus-community/kube-prometheus-stack
 ```
+
+or if you have char locally
+
+```
+helm install <RELEASE_NAME> <path-to-helm-char-folder>
+```
+
+```
+helm install monitoring ./kube-prometheus-stack
+```
+
 
 and then check, that installation was successful:
 
@@ -500,3 +523,35 @@ grafana:
     nodePort: 30008
 ```
 
+Better practice is to create like separated file `myvalues.yaml` and put there values you would like (see `helm_examples/my-cluster-config/kube-prometheus-stack/myvalues.yaml`)
+
+Command to upgrade local chart
+
+```
+helm upgrade <label-name> --values=<values-file> <path-to-local-chart-folder>
+```
+
+```
+helm upgrade monitoring --values=myvalues.yaml .
+```
+
+How to download helm chart locally:
+
+```
+helm pull [chart URL | repo/chartname]
+```
+
+- `repo/chartname` is the same as for helm install
+- `chart URL` is url on github, where helm chart files are located
+
+
+```
+helm pull prometheus-community/kube-prometheus-stack --untar
+```
+or
+
+```
+helm pull bitnami/mysql --untar
+```
+
+`--untar` allows to unpack zip automatically
