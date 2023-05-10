@@ -16,7 +16,7 @@ spec:
       - name: webapp
         # Note to deployer - add -dev at the end of here for development version
         # example of string function
-        image: {{ .Values.doсkerRepoName | lower }}/k8s-fleetman-helm-demo:v1.0.0-dev
+        image: {{ .Values.doсkerRepoName | lower }}/k8s-fleetman-helm-demo:v1.0.0{{ if .Values.development }}-dev{{ end }}
 ---
 apiVersion: v1
 kind: Service
