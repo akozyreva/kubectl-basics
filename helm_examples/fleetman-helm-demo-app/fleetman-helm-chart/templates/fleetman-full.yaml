@@ -13,10 +13,17 @@ spec:
         app: webapp
     spec:
       containers:
-      - name: webapp
-        # Note to deployer - add -dev at the end of here for development version
-        # example of string function
-        image: {{ .Values.doсkerRepoName | lower }}/k8s-fleetman-helm-demo:v1.0.0{{ if .Values.development }}-dev{{ end }}
+      # we need to substitue some yaml here, it was moved to _common-blocks.tpl file
+      # previously it was:
+      # - name: webapp
+      #   image: {{ .Values.doсkerRepoName | lower }}/k8s-fleetman-helm-demo:v1.0.0{{ if .Values.development }}-dev{{ end }}
+      # template OR include
+      # template example . is to reference from what file to take values. it's too complicated so please . here
+      # include can be used with pipeline, so it's preferable to use it
+      # use minus before curly brackets to remove extra line
+      # if you comment something in curly brackets, it will be executed! Carefully!
+      #  template "webappImage" .
+      {{- include "webappImageWithoutHardcodedIdentation" . | indent 6 }}
 ---
 apiVersion: v1
 kind: Service

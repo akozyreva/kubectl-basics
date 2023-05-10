@@ -581,6 +581,12 @@ or for gebugging current helm chart:
 helm template .
 ```
 
+to see detailed log of parsing template
+
+```
+helm template . --debug
+```
+
 to rewrite specific value (from values.yaml as in example):
 
 ```
