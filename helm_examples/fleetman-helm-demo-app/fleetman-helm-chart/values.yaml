@@ -1,4 +1,4 @@
 webapp:
-  numberOfWebbAppReplicas: 4
+  numberOfWebbAppReplicas: 1
 doсkerRepoName: RicharDchesterwood
 development: true

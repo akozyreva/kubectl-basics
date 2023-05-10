@@ -129,6 +129,12 @@ NAME         READY   UP-TO-DATE   AVAILABLE   AGE
 nginx-depl   1/1     1            1           21m
 ```
 
+or:
+
+```
+kubectl delete deployment <deployment-name>
+```
+
 Kubectl - deploy with yaml
 
 ```
